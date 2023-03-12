@@ -1,4 +1,7 @@
 module.exports.getAll = function(req, res) {
+    res.json({
+        message: 'categoties'
+    })
 
 }
 
