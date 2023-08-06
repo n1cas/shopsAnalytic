@@ -5,6 +5,7 @@ import { take, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { AuthService } from '../shared/services/auth.service';
+import { MaterialService } from '../shared/services/material.service';
 
 @Component({
   selector: 'app-login-page',
@@ -19,7 +20,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   constructor(
     private readonly auth: AuthService,
     private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
   ) { 
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -35,11 +36,15 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     )
     .subscribe((params:Params)=>{
       if (params['registered']) {
-        console.log('registered');
+        MaterialService.toast('Successfull registered')
         return;
       }
       if (params['accessDenied']) {
-        console.log('pls login');
+        MaterialService.toast('Access Denied, Please try to login!')
+        return;
+      }
+      if (params['sessionFaild']) {
+        MaterialService.toast('session expaired, Please sign in again!')
         return;
       }
     })
@@ -59,11 +64,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       )
       .subscribe((data => {
         this.router.navigate(['/overview']);
-        console.log(data);
       }),
-        (err) => {
+        (e) => {
+          MaterialService.toast(e.error.message)
           this.form.enable();
-          console.warn(err)
+          console.warn(e)
         })
   }
 }

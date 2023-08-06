@@ -1,0 +1,1 @@
+import {LogoComponent} from './logo.component'

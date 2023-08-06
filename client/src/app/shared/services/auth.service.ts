@@ -26,7 +26,7 @@ private token: any = null;
     return this.http.post<User>('/api/auth/register', user)
   }
 
-  private setToken(token:string):void {
+  public setToken(token:string):void {
     this.token = token;
     localStorage.setItem('auth-token', token);
   }
